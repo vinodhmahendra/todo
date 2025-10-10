@@ -1,5 +1,10 @@
 <div>
   <h2>Login</h2>
+
+  <div *ngIf="errorMessage">
+    <p style="color: red;">{{ errorMessage }}</p>
+  </div>
+  
   <form (ngSubmit)="onLogin()">
     <div>
       <label>Username:</label>
@@ -12,13 +17,6 @@
     <button type="submit">Login</button>
   </form>
   
-  <div *ngIf="errorMessage">
-    <p style="color: red;">{{ errorMessage }}</p>
-  </div>
   
-  <div>
-    <p><strong>Test Credentials:</strong></p>
-    <p>Username: admin</p>
-    <p>Password: password123</p>
-  </div>
+  
 </div>

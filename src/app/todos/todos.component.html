@@ -1,0 +1,40 @@
+<div>
+    <h2>My Todos</h2>
+
+    <!-- Add new Todo -->
+    <form (ngSubmit)="addTodo()">
+        <input 
+            type="text" 
+            name="newTodo" 
+            id="newTodo"
+            placeholder="Add a new todo..."
+            required
+            >
+            <button type="submit"> Add</button>
+    </form>
+
+    <!-- Filter Buttons -->
+    <div>
+        <button (click)="filter = 'all'" [class.active]="filter === 'all'">All</button>
+        <button (click)="filter = 'active' " [class.active]="filter === 'active'">Active</button>
+        <button (click)="filter = 'completed' " [class.active]="filter === 'completed'">Completed</button>
+    </div>
+
+
+    <!-- Todo list -->
+    <div>
+        <div>
+            <input 
+                type="checkbox"
+                [checked] = "todo.completed"
+                (change) = "toggleTodo(todo.id)">
+            <span [class.completed] = "todo.completed">{{ todo.title }}</span>
+            <small>{{ todo.createdAt}}</small>
+            <button (click)="deleteTodo(todo.id)">Delete</button>
+        </div>
+    </div>
+
+    <ng-template #noTodos>
+        <p>No todos found. Add one Above!</p>
+    </ng-template>
+</div>

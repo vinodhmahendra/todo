@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  username = '';
+  username = 'admin';
   password = '';
   errorMessage = '';
   

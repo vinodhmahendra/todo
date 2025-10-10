@@ -1,14 +1,35 @@
-# Todo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+### Install Angular CLI & Create Project
+```bash
+
+node --version
+20.10.0
+
+npm --version
+10.2.4
+
+# Install Angular CLI v17
+npm install -g @angular/cli@17
+
+# Create new Angular 17 project (standalone by default)
+ng new todo
+
+# Navigate to project
+cd todo
+
+# Start development server
+ng serve --open
+
+
+Visit `http://localhost:4200` to see your app running.
+
+```
+
+### Explore Angular CLI Commands
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
@@ -27,26 +48,9 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 
-### Install Angular CLI & Create Project
-```bash
-# Install Angular CLI v17
-npm install -g @angular/cli@17
-
-# Create new Angular 17 project (standalone by default)
-ng new todo
-
-# Navigate to project
-cd todo
-
-# Start development server
-ng serve
-```
-
-Visit `http://localhost:4200` to see your app running.
 
 
-
-## 7. Angular 17 Project Structure
+### Angular 17 Project Structure
 
 ```
 src/
@@ -60,10 +64,11 @@ src/
 ├── environments/             # Environment configs
 ├── main.ts                   # Bootstrap file (no module)
 └── index.html               # Main HTML file.
-``````
+
+```
 
 
-## Key Angular 17 Changes
+### Key Angular 17 Changes
 
 1. **Standalone Components** - No NgModules required
 2. **Direct Imports** - Import what you need in each component
@@ -72,13 +77,7 @@ src/
 5. **styleUrl** - Singular instead of styleUrls
 6. **Simplified Structure** - Less boilerplate code
 
-## Angular 17 Concepts Demonstrated
 
-1. **Standalone Components** - Self-contained building blocks
-2. **Direct Imports** - Import dependencies directly
-3. **Templates & Data Binding** - HTML with Angular markup
-4. **Signal-based Reactivity** - New reactive primitives
-5. **Improved Performance** - Better tree-shaking and bundle size
 
 Angular 17 is more modern, simpler, and performant!
 
@@ -88,29 +87,36 @@ Angular 17 is more modern, simpler, and performant!
 
 Angular 17 uses **standalone components** by default - no NgModules needed!
 
-### Key Files:
+## Key Files:
 - `src/app/app.component.ts` - Standalone component logic
 - `src/app/app.component.html` - Template
 - `src/app/app.component.css` - Styles
+- `src/app/app.component.spec.ts` - test
 - `src/main.ts` - Bootstrap file (replaces app.module.ts)
 
-### app.component.ts Structure (Angular 17):
+## app.component.ts Structure (Angular 17):
 ```typescript
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-root',             // HTMl tag  name  <app-root> </app-root> -- > index.html
   standalone: true,                    // NEW: Standalone component
   imports: [CommonModule, RouterOutlet], // NEW: Direct imports
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.html', // 
   styleUrl: './app.component.css'      // NEW: styleUrl (singular)
 })
 export class AppComponent {
-  title = 'my-training-app';
+  title = 'todo'; // property
 }
 ```
+
+##  app.compomnent.html structure 
+<div>
+  <router-outlet></router-outlet>
+</div>
+
 
 ### main.ts (Bootstrap - Angular 17):
 ```typescript
@@ -128,19 +134,98 @@ bootstrapApplication(AppComponent, {
 3. `styleUrl` instead of `styleUrls`
 4. `bootstrapApplication()` instead of NgModule bootstrap
 
-##  Create Welcome Component (Angular 17 Standalone)
+
+### Angular Data Binding 
+
+#### String Interpolation '{{}}'
+```html
+<p>App Title: {{ title }}</p>
+<p>User: {{ userName }}</p>
+```
+- Displays component property values in template
+- One-way: Component → Template
+
+#### Property Binding `[property]`
+```html
+<img [src]="imageUrl" [alt]="imageAlt">
+<button [disabled]="isButtonDisabled">Click Me</button>
+```
+- Sets HTML element properties from component
+- One-way: Component → Template
+
+#### Event Binding `(event)`
+```html
+<button (click)="handleClick()">Click Event</button>
+<input (keyup)="onKeyUp($event)">
+```
+- Handles user events in component methods
+- One-way: Template → Component
+
+#### Two-Way Binding
+```html
+<input [(ngModel)]="userName" placeholder="Enter your name">
+<p>Hello, {{ userName }}!</p>
+```
+- Combines property and event binding
+- Two-way: Component ↔ Template
+- Requires FormsModule import
+
+##  Create login Component (Angular 17 Standalone)
 
 ### Generate Standalone Component via CLI
 ```bash
 # Generate standalone component (default in Angular 17)
-ng generate component welcome
+ng generate component login
 # or shorthand
-ng g c welcome
+ng g c login
 
 This creates:
-- `src/app/welcome/welcome.component.ts` (standalone)
-- `src/app/welcome/welcome.component.html`
-- `src/app/welcome/welcome.component.css`
-- `src/app/welcome/welcome.component.spec.ts`
+- `src/app/login/login.component.ts` (standalone)
+- `src/app/login/login.component.html`
+- `src/app/login/login.component.css`
+- `src/app/login/login.component.spec.ts`
+
+```
+
+### Benefits of Services:
+1. **Single Responsibility** - Service handles only authentication
+2. **Reusability** - Multiple components can use same service
+3. **Testability** - Easy to mock and test separately
+4. **Data Sharing** - Shared state across components
+5. **Dependency Injection** - Angular manages service lifecycle
+
+ng generate service services/auth
+
+This creates:
+- `src/services/auth.service.ts` 
+- `src/services/auth.service.spec.ts`
+
+```
+```
+###  Error Handling
+URL : http://localhost:4200/login123
+Error : Cannot match any routes. URL Segment: 'login123'
+
+ng generate component error
 
 
+1. Visit `http://localhost:4200/login123` - Shows 404 error
+2. Visit `http://localhost:4200/invalid-page` - Shows 404 error
+3. Click "Go to Login" - Navigates back to login
+
+### Key Concepts:
+- **Wildcard Routes (`**`)** - Catches undefined routes
+- **Router Navigation** - Programmatic navigation
+- **Event Binding** - Button click handling
+- **Minimal Error Handling** - Simple user feedback
+
+
+### Todo's Feature
+
+  CRUD Operations - Create , Read, Update, Delete todos
+  Filtering - All , Active , Completed todos
+  Statistics - Total , Active , completed counts
+  TypeScript Interface - Typ-safe structure
+  Navigation - Link from Welcome Page
+
+  ng generate component todos
