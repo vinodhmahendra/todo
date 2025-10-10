@@ -5,6 +5,7 @@
     <form (ngSubmit)="addTodo()">
         <input 
             type="text" 
+            [(ngModel)] = "newTodo"
             name="newTodo" 
             id="newTodo"
             placeholder="Add a new todo..."
@@ -22,14 +23,14 @@
 
 
     <!-- Todo list -->
-    <div>
-        <div>
+    <div *ngIf="filteredTodos.length > 0; else noTodos">
+        <div *ngFor="let todo of filteredTodos" class="todo-item">
             <input 
                 type="checkbox"
                 [checked] = "todo.completed"
                 (change) = "toggleTodo(todo.id)">
             <span [class.completed] = "todo.completed">{{ todo.title }}</span>
-            <small>{{ todo.createdAt}}</small>
+            <small>{{ todo.createdAt | date:'short'}}</small>
             <button (click)="deleteTodo(todo.id)">Delete</button>
         </div>
     </div>
@@ -37,4 +38,11 @@
     <ng-template #noTodos>
         <p>No todos found. Add one Above!</p>
     </ng-template>
+
+    <!-- statistics -->
+    <div>
+        <p>Total: {{ todoStats.total }} | Active : {{ todoStats.active}} | Completed: {{todoStats.completed}}</p>
+    </div>
+
+    <button (click) = "goBack()">Back to Welcome</button>
 </div>

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { DefaultTitleStrategy, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 // Structure for Todo
 interface Todo {
@@ -12,7 +14,7 @@ interface Todo {
 @Component({
   selector: 'app-todos',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './todos.component.html',
   styleUrl: './todos.component.css'
 })
@@ -37,4 +39,34 @@ export class TodosComponent {
       this.newTodo = '';
     }
   }
-}
+
+  toggleTodo(id: number): void{
+    const todo = this.todos.find(t => t.id  === id);
+    if ( todo ) {
+      todo.completed = !todo.completed;
+    }
+  }
+
+  get filteredTodos() : Todo[] {
+    switch( this.filter ) {
+      case 'active' : return this.todos.filter(t => !t.completed);
+      case 'completed': return this.todos.filter(t => t.completed);
+      default: return this.todos;
+    }
+  }
+
+  deleteTodo(id: number): void {
+    this.todos = this.todos.filter(t => t.id !== id)
+  }
+
+  get todoStats() {
+    const total = this.todos.length;
+    const completed = this.todos.filter(t => t.completed).length;
+    const active = total -completed;
+    return { total, completed, active };
+  }
+
+  goBack() : void {
+    this.router.navigate(['/welcome','admin'])
+  }
+}tods 
