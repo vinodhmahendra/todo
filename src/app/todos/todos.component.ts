@@ -69,4 +69,4 @@ export class TodosComponent {
   goBack() : void {
     this.router.navigate(['/welcome','admin'])
   }
-}tods 
+} 
