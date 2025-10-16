@@ -1,48 +1,136 @@
-<div>
-    <h2>My Todos</h2>
-
-    <!-- Add new Todo -->
-    <form (ngSubmit)="addTodo()">
-        <input 
-            type="text" 
-            [(ngModel)] = "newTodo"
-            name="newTodo" 
-            id="newTodo"
-            placeholder="Add a new todo..."
-            required
-            >
-            <button type="submit"> Add</button>
-    </form>
-
-    <!-- Filter Buttons -->
-    <div>
-        <button (click)="filter = 'all'" [class.active]="filter === 'all'">All</button>
-        <button (click)="filter = 'active' " [class.active]="filter === 'active'">Active</button>
-        <button (click)="filter = 'completed' " [class.active]="filter === 'completed'">Completed</button>
-    </div>
-
-
-    <!-- Todo list -->
-    <div *ngIf="filteredTodos.length > 0; else noTodos">
-        <div *ngFor="let todo of filteredTodos" class="todo-item">
-            <input 
-                type="checkbox"
-                [checked] = "todo.completed"
-                (change) = "toggleTodo(todo.id)">
-            <span [class.completed] = "todo.completed">{{ todo.title }}</span>
-            <small>{{ todo.createdAt | date:'short'}}</small>
-            <button (click)="deleteTodo(todo.id)">Delete</button>
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-center mb-4">My Todo's</h1>
+        
+        <!-- Add Todo Form -->
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Add New Todo</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-10">
+                <input type="text" 
+                       [(ngModel)]="newTodo" 
+                       name="newTodo" 
+                       placeholder="Enter your todo..." 
+                       class="form-control"
+                       (keyup.enter)="addTodo()">
+              </div>
+              <div class="col-md-2">
+                <button (click)="addTodo()" class="btn btn-success w-100">
+                  <i class="fas fa-plus"></i> Add
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
+  
+        <!-- Filter Buttons -->
+        <div class="text-center mb-4">
+          <div class="btn-group" role="group">
+            <button (click)="filter = 'all'" 
+                    [class]="'btn ' + (filter === 'all' ? 'btn-primary' : 'btn-outline-primary')">
+              All ({{todoStats().total}})
+            </button>
+            <button (click)="filter = 'active'" 
+                    [class]="'btn ' + (filter === 'active' ? 'btn-warning' : 'btn-outline-warning')">
+              Active ({{todoStats().active}})
+            </button>
+            <button (click)="filter = 'completed'" 
+                    [class]="'btn ' + (filter === 'completed' ? 'btn-success' : 'btn-outline-success')">
+              Completed ({{todoStats().completed}})
+            </button>
+          </div>
+        </div>
+  
+        <!-- Todos Table -->
+        <div class="card">
+          <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Todo List</h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                  <tr>
+                    <th width="10%">Status</th>
+                    <th width="50%">Description</th>
+                    <th width="25%">Target Date</th>
+                    <th width="15%">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let todo of filteredTodos()" 
+                      [class]="todo.completed ? 'table-success' : ''">
+                    <td class="align-middle">
+                      <div class="form-check">
+                        <input type="checkbox" 
+                               [checked]="todo.completed"
+                               (change)="toggleTodo(todo.id)"
+                               class="form-check-input">
+                      </div>
+                    </td>
+                    <td class="align-middle">
+                      <span [class]="todo.completed ? 'text-decoration-line-through text-muted' : 'fw-bold'">
+                        {{todo.description}}
+                      </span>
+                    </td>
+                    <td class="align-middle">
+                      <small class="text-muted">{{todo.targetDate | date:'short'}}</small>
+                    </td>
+                    <td class="align-middle">
+                      <button (click)="deleteTodo(todo.id)" 
+                              class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Empty State -->
+        <div *ngIf="filteredTodos().length === 0" class="text-center mt-4">
+          <div class="alert alert-info">
+            <h4><i class="fas fa-info-circle"></i> No todos found!</h4>
+            <p *ngIf="filter === 'all'" class="mb-0">Add your first todo above to get started.</p>
+            <p *ngIf="filter === 'active'" class="mb-0">No active todos. Great job!</p>
+            <p *ngIf="filter === 'completed'" class="mb-0">No completed todos yet.</p>
+          </div>
+        </div>
+  
+        <!-- Statistics Card -->
+        <div class="card mt-4">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Statistics</h5>
+          </div>
+          <div class="card-body">
+            <div class="row text-center">
+              <div class="col-md-4">
+                <div class="stat-item">
+                  <h3 class="text-primary">{{todoStats().total}}</h3>
+                  <p class="text-muted mb-0">Total Tasks</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="stat-item">
+                  <h3 class="text-warning">{{todoStats().active}}</h3>
+                  <p class="text-muted mb-0">Active Tasks</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="stat-item">
+                  <h3 class="text-success">{{todoStats().completed}}</h3>
+                  <p class="text-muted mb-0">Completed</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <ng-template #noTodos>
-        <p>No todos found. Add one Above!</p>
-    </ng-template>
-
-    <!-- statistics -->
-    <div>
-        <p>Total: {{ todoStats.total }} | Active : {{ todoStats.active}} | Completed: {{todoStats.completed}}</p>
-    </div>
-
-    <button (click) = "goBack()">Back to Welcome</button>
-</div>
+  </div>
