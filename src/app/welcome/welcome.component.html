@@ -1,26 +1,5 @@
-<div>
-  <h1>{{ greeting }}, {{ userName }}!</h1>
-  <h2>Welcome to Angular 17</h2>
-  
-  <div>
-    <p><strong>User Details:</strong></p>
-    <p>Name: {{ userName }}</p>
-    <p>Login Time: {{ currentDate | date:'medium' }}</p>
-    <p>Current Time: {{ currentDate | date:'shortTime' }}</p>
-  </div>
-  
-  <div>
-    <h3>{{ greeting }} Message:</h3>
-    <p *ngIf="greeting === 'Good Morning'">Start your day with Angular development!</p>
-    <p *ngIf="greeting === 'Good Afternoon'">Hope you're having a productive day!</p>
-    <p *ngIf="greeting === 'Good Evening'">Time to wrap up your coding session!</p>
-  </div>
-  
-  <div>
-    <h3>Quick Stats:</h3>
-    <p>You are logged in as: <strong>{{ userName }}</strong></p>
-    <p>Session started: {{ currentDate | date:'fullDate' }}</p>
-  </div>
-  
-  <button (click)="logout()">Logout</button>
+<H1>Welcome!</H1>
+
+<div class="container">
+  Welcome {{ userName }}!! You can manage your todos <a routerLink="/todos" class="btn btn-success">here</a>
 </div>

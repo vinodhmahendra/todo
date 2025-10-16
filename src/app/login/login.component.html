@@ -1,22 +1,20 @@
-<div>
+<div class="container">
   <h2>Login</h2>
-
-  <div *ngIf="errorMessage">
-    <p style="color: red;">{{ errorMessage }}</p>
-  </div>
+  <div class="container">
+  <div *ngIf="errorMessage" class="alert alert-warning"> {{ errorMessage}} </div>
   
   <form (ngSubmit)="onLogin()">
-    <div>
+    <div class="form-group mb-3">
       <label>Username:</label>
-      <input type="text" [(ngModel)]="username" name="username" required>
+      <input type="text" [(ngModel)]="username" name="username" class="form-control" required>
     </div>
-    <div>
+    <div class="form-group mb-3">
       <label>Password:</label>
-      <input type="password" [(ngModel)]="password" name="password" required>
+      <input type="password" [(ngModel)]="password" name="password" class="form-control" required>
     </div>
-    <button type="submit">Login</button>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success">Login</button>
+    </div>
   </form>
-  
-  
-  
+  </div>
 </div>
