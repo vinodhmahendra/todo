@@ -1,14 +1,22 @@
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div><a href="https://www.simplilearn.com/" class="navbar-brand">Simplilearn</a></div>
-
-        <ul class="navbar-nav">
-            <li><a routerLink="/welcome/admin" class="nav-link">Home</a></li>
-            <li><a routerLink="/todos" class="nav-link">Todos</a></li>
-        </ul>
-        <ul class="navbar-nav navbar-collapse justify-content-end">
-            <li><a routerLink="/login" class="nav-link">Login</a></li>
-            <li><a routerLink="/logout" class="nav-link">Logout</a></li>
-        </ul>
+    <nav class="navbar navbar-expand-md navbar-dark bg-success">
+      <div><a href="https://www.simplilearn.com" class="navbar-brand">Simpliearn</a></div>
+      
+      <ul class="navbar-nav" *ngIf="isAuthenticated()">
+        <li><a [routerLink]="['/welcome', getCurrentUser()]" class="nav-link">Home</a></li>
+        <li><a routerLink="/todos" class="nav-link">Todos</a></li>
+      </ul>
+      
+      <ul class="navbar-nav navbar-collapse justify-content-end">
+        <li *ngIf="!isAuthenticated()">
+          <a routerLink="/login" class="nav-link">Login</a>
+        </li>
+        <li *ngIf="isAuthenticated()">
+          <span class="navbar-text me-3">Welcome, {{getCurrentUser()}}</span>
+        </li>
+        <li *ngIf="isAuthenticated()">
+          <button (click)="logout()" class="btn btn-outline-light btn-sm">Logout</button>
+        </li>
+      </ul>
     </nav>
-</header>
+  </header>

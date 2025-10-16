@@ -12,8 +12,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class WelcomeComponent implements OnInit {
   userName = '';
-  currentDate = new Date();
-  greeting = '';
+
   
   constructor(
     private route: ActivatedRoute,
@@ -21,24 +20,19 @@ export class WelcomeComponent implements OnInit {
     private authService: AuthService
   ) {}
   
-  ngOnInit(): void {
-    // Read route parameter
-    this.userName = this.route.snapshot.params['name'];
-    this.setGreeting();
-  }
   
-  setGreeting(): void {
-    const hour = new Date().getHours();
-    if (hour < 12) {
-      this.greeting = 'Good Morning';
-    } else if (hour < 18) {
-      this.greeting = 'Good Afternoon';
-    } else {
-      this.greeting = 'Good Evening';
+  
+ 
+    ngOnInit(): void {
+    // Check if user is authenticated
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
     }
-  }
-  goTodos(): void {
-    this.router.navigate(['/todos']);
+    
+    // Get username from session storage or route
+    this.userName = this.authService.getCurrentUser() || 
+                   this.route.snapshot.params['name'];
   }
   
   logout(): void {
