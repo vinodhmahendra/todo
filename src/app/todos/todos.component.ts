@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 export class Todo {
   constructor(
@@ -20,14 +22,25 @@ export class Todo {
 export class TodosComponent implements OnInit {
   newTodo = '';
   filter = 'all';
+  currentUser = '';
   
   todos: Todo[] = [
     new Todo(1, 'Learn to Dance', false, new Date()),
     new Todo(2, 'Become an Expert at Angular', false, new Date()),
-    new Todo(3, 'Visit India', false, new Date())
+    new Todo(3, 'Visit USA', false, new Date())
   ];
 
-  ngOnInit() {}
+  constructor ( private authService: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    //Check Authentication
+    if ( !this.authService.isAuthenticated() ) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.currentUser = this.authService.getCurrentUser() || 'User';
+  }
 
   addTodo(): void {
     if (this.newTodo.trim()) {
